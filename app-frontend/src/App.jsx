@@ -1,12 +1,18 @@
-import { Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { CartProvider } from './context/CartContext';
+import CustomerLayout from './components/layout/CustomerLayout';
 import MenuPage from './pages/customer/MenuPage';
 
-function App() {
-  return (
-    <Routes>
-      <Route path="/" element={<MenuPage />} />
-    </Routes>
-  );
-}
+const App = () => (
+    <CartProvider>
+        <BrowserRouter>
+            <Routes>
+                <Route element={<CustomerLayout />}>
+                    <Route path="/" element={<MenuPage />} />
+                </Route>
+            </Routes>
+        </BrowserRouter>
+    </CartProvider>
+);
 
 export default App;

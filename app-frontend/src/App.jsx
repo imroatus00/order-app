@@ -1,6 +1,9 @@
 import { Routes, Route, Navigate } from "react-router-dom";
-import LoginPage from "./pages/admin/LoginPage";
+import { CartProvider } from "./context/CartContext";
 import { useAuth } from "./context/AuthContext";
+import CustomerLayout from "./components/layout/CustomerLayout";
+import MenuPage from "./pages/customer/MenuPage";
+import LoginPage from "./pages/admin/LoginPage";
 
 function ProtectedRoute({ children }) {
   const { isAuthenticated } = useAuth();
@@ -14,30 +17,31 @@ function App() {
   const { isAuthenticated } = useAuth();
 
   return (
-    <Routes>
-      <Route
-        path="/"
-        element={<Navigate to="/admin/login" replace />}
-      />
+    <CartProvider>
+      <Routes>
+        <Route element={<CustomerLayout />}>
+          <Route path="/" element={<MenuPage />} />
+        </Route>
 
-      <Route
-        path="/admin/login"
-        element={
-          isAuthenticated
-            ? <Navigate to="/admin/orders" replace />
-            : <LoginPage />
-        }
-      />
+        <Route
+          path="/admin/login"
+          element={
+            isAuthenticated
+              ? <Navigate to="/admin/orders" replace />
+              : <LoginPage />
+          }
+        />
 
-      <Route
-        path="/admin/orders"
-        element={
-          <ProtectedRoute>
-            <div>Dashboard Admin akan dibuat.</div>
-          </ProtectedRoute>
-        }
-      />
-    </Routes>
+        <Route
+          path="/admin/orders"
+          element={
+            <ProtectedRoute>
+              <div>Dashboard Admin akan dibuat.</div>
+            </ProtectedRoute>
+          }
+        />
+      </Routes>
+    </CartProvider>
   );
 }
 

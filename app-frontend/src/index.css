@@ -290,7 +290,9 @@ img {
   position: absolute;
   z-index: 2;
   width: clamp(240px, 30vw, 400px);
-  height: clamp(160px, 25vh, 260px);
+  max-width: 90%;
+  height: auto;
+  max-height: 100%;
   object-fit: contain;
   object-position: center bottom;
   right: clamp(10px, 5vw, 80px);
@@ -371,7 +373,7 @@ img {
 
   .food-image {
     width: clamp(220px, 38vw, 340px);
-    height: 200px;
+    height: auto;
     right: 3%;
   }
 }
@@ -436,8 +438,8 @@ img {
 
   .food-image {
     width: 78%;
-    height: 165px;
-    right: 0;
+    height: auto;
+    right: 10px;
     bottom: 5px;
   }
 }
@@ -507,7 +509,8 @@ img {
   }
 
   .food-image {
-    height: 160px;
+    height: auto;
+    max-height: 90%;
   }
 }
 

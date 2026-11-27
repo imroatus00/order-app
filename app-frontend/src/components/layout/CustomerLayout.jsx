@@ -14,7 +14,7 @@ const CustomerLayout = () => {
             <header className="sticky top-0 z-20 flex items-center justify-between bg-[#FFF0DF] px-4 py-3 shadow-sm">
                 <Link to="/" className="flex items-center gap-2">
                     <img
-                        src="/images/logo/abata-logo.png"
+                        src="/images/logo/logo-abata.png"
                         alt="Abata"
                         className="h-9 w-9 object-contain"
                     />

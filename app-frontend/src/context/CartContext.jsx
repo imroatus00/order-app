@@ -5,15 +5,15 @@ const CartContext = createContext(null);
 export const CartProvider = ({ children }) => {
     const [items, setItems] = useState([]);
 
-    const addItem = (menu) =>
+    const addItem = (menu, qty = 1) =>
         setItems((prev) => {
             const found = prev.find((i) => i.id === menu.id);
             if (found) {
                 return prev.map((i) =>
-                    i.id === menu.id ? { ...i, qty: i.qty + 1 } : i
+                    i.id === menu.id ? { ...i, qty: i.qty + qyt } : i
                 );
             }
-            return [...prev, { ...menu, qty: 1 }];
+            return [...prev, { ...menu, qty }];
         });
 
     const decreaseItem = (id) =>

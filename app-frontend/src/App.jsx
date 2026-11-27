@@ -1,18 +1,48 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { CartProvider } from './context/CartContext';
-import CustomerLayout from './components/layout/CustomerLayout';
-import MenuPage from './pages/customer/MenuPage';
+import { Routes, Route, Navigate } from "react-router-dom";
+import { CartProvider } from "./context/CartContext";
+import { useAuth } from "./context/AuthContext";
+import CustomerLayout from "./components/layout/CustomerLayout";
+import MenuPage from "./pages/customer/MenuPage";
+import LoginPage from "./pages/admin/LoginPage";
 
-const App = () => (
+function ProtectedRoute({ children }) {
+  const { isAuthenticated } = useAuth();
+
+  return isAuthenticated
+    ? children
+    : <Navigate to="/admin/login" replace />;
+}
+
+function App() {
+  const { isAuthenticated } = useAuth();
+
+  return (
     <CartProvider>
-        <BrowserRouter>
-            <Routes>
-                <Route element={<CustomerLayout />}>
-                    <Route path="/" element={<MenuPage />} />
-                </Route>
-            </Routes>
-        </BrowserRouter>
+      <Routes>
+        <Route element={<CustomerLayout />}>
+          <Route path="/" element={<MenuPage />} />
+        </Route>
+
+        <Route
+          path="/admin/login"
+          element={
+            isAuthenticated
+              ? <Navigate to="/admin/orders" replace />
+              : <LoginPage />
+          }
+        />
+
+        <Route
+          path="/admin/orders"
+          element={
+            <ProtectedRoute>
+              <div>Dashboard Admin akan dibuat.</div>
+            </ProtectedRoute>
+          }
+        />
+      </Routes>
     </CartProvider>
-);
+  );
+}
 
 export default App;

@@ -3,6 +3,7 @@ import { CartProvider } from "./context/CartContext";
 import { useAuth } from "./context/AuthContext";
 import CustomerLayout from "./components/layout/CustomerLayout";
 import MenuPage from "./pages/customer/MenuPage";
+import MenuDetailPage from './pages/customer/MenuDetailPage';
 import LoginPage from "./pages/admin/LoginPage";
 
 function ProtectedRoute({ children }) {
@@ -22,6 +23,7 @@ function App() {
         <Route element={<CustomerLayout />}>
           <Route path="/" element={<MenuPage />} />
         </Route>
+        <Route path="/menu/:id" element={<MenuDetailPage />} />
 
         <Route
           path="/admin/login"

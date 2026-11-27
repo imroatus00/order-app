@@ -4,6 +4,7 @@ import { useAuth } from "./context/AuthContext";
 import CustomerLayout from "./components/layout/CustomerLayout";
 import MenuPage from "./pages/customer/MenuPage";
 import MenuDetailPage from './pages/customer/MenuDetailPage';
+import CartPage from './pages/customer/CartPage';
 import LoginPage from "./pages/admin/LoginPage";
 
 function ProtectedRoute({ children }) {
@@ -24,6 +25,8 @@ function App() {
           <Route path="/" element={<MenuPage />} />
         </Route>
         <Route path="/menu/:id" element={<MenuDetailPage />} />
+        <Route path="/cart" element={<CartPage />} />
+        <Route path="/checkout" element={<div>Halaman data pemesanan akan dibuat.</div>} />
 
         <Route
           path="/admin/login"

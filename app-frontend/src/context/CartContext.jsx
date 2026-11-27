@@ -1,16 +1,27 @@
-import { createContext, useContext, useState } from 'react';
+import { createContext, useContext, useEffect, useState } from 'react';
 
 const CartContext = createContext(null);
 
 export const CartProvider = ({ children }) => {
-    const [items, setItems] = useState([]);
+    const [items, setItems] = useState(() => {
+        try {
+            const saved = JSON.parse(localStorage.getItem('cart'));
+            return Array.isArray(saved) ? saved : [];
+        } catch {
+            return [];
+        }
+    });
+
+    useEffect(() => {
+        localStorage.setItem('cart', JSON.stringify(items));
+    }, [items]);
 
     const addItem = (menu, qty = 1) =>
         setItems((prev) => {
             const found = prev.find((i) => i.id === menu.id);
             if (found) {
                 return prev.map((i) =>
-                    i.id === menu.id ? { ...i, qty: i.qty + qyt } : i
+                    i.id === menu.id ? { ...i, qty: i.qty + qty } : i
                 );
             }
             return [...prev, { ...menu, qty }];

@@ -2,9 +2,11 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import { CartProvider } from "./context/CartContext";
 import { useAuth } from "./context/AuthContext";
 import CustomerLayout from "./components/layout/CustomerLayout";
+import AdminLayout from "./components/layout/AdminLayout";
 import MenuPage from "./pages/customer/MenuPage";
 import MenuDetailPage from './pages/customer/MenuDetailPage';
 import LoginPage from "./pages/admin/LoginPage";
+import OrdersPage from "./pages/admin/OrdersPage";
 
 function ProtectedRoute({ children }) {
   const { isAuthenticated } = useAuth();
@@ -34,14 +36,26 @@ function App() {
           }
         />
 
+        {/* Semua halaman admin di bawah ini wajib login */}
         <Route
-          path="/admin/orders"
+          path="/admin"
           element={
             <ProtectedRoute>
-              <div>Dashboard Admin akan dibuat.</div>
+              <AdminLayout />
             </ProtectedRoute>
           }
-        />
+        >
+          <Route index element={<Navigate to="orders" replace />} />
+          <Route path="orders" element={<OrdersPage />} />
+          <Route
+            path="orders/offline"
+            element={<div className="p-6 text-sm text-gray-600">Input pesanan offline akan dibuat.</div>}
+          />
+          <Route
+            path="menu"
+            element={<div className="p-6 text-sm text-gray-600">Kelola menu akan dibuat.</div>}
+          />
+        </Route>
       </Routes>
     </CartProvider>
   );

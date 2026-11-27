@@ -1,14 +1,29 @@
-
+@import "tailwindcss";
 * {
-  box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
 }
 
 body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background-color: #f8f8f8;
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #FFF1E3;
+    color: #3D251C;
+}
+
+button,
+input {
+    font: inherit;
+}
+
+img {
+    display: block;
+    max-width: 100%;
 }
 
 #root {
-  min-height: 100vh;
+    min-height: 100vh;
 }

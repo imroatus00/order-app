@@ -8,6 +8,7 @@ import MenuDetailPage from './pages/customer/MenuDetailPage';
 import CartPage from './pages/customer/CartPage';
 import LoginPage from "./pages/admin/LoginPage";
 import OrdersPage from "./pages/admin/OrdersPage";
+import OrderDetailPage from "./pages/admin/OrderDetailPage";
 
 function ProtectedRoute({ children }) {
   const { isAuthenticated } = useAuth();
@@ -50,6 +51,7 @@ function App() {
         >
           <Route index element={<Navigate to="orders" replace />} />
           <Route path="orders" element={<OrdersPage />} />
+          <Route path="orders/:id" element={<OrderDetailPage />} />
           <Route
             path="orders/offline"
             element={<div className="p-6 text-sm text-gray-600">Input pesanan offline akan dibuat.</div>}

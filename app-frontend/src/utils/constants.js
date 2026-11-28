@@ -46,3 +46,10 @@ export const NEXT_STATUS = {
   diproses: "siap_kirim",
   siap_kirim: "selesai",
 };
+
+export const UPDATE_STEPS = [
+  { key: "dibayar", label: "Dibayar" },
+  { key: "diproses", label: "Diproses" },
+  { key: "siap_kirim", label: "Siap diambil / dikirim" },
+  { key: "selesai", label: "Selesai" },
+];

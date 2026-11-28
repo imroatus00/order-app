@@ -9,6 +9,7 @@ export const ORDER_STATUS = {
 
 export const STATUS_LABEL = {
   menunggu_pembayaran: "Menunggu",
+  belum_dibayar: "Belum dibayar",
   dibayar: "Dibayar",
   diproses: "Diproses",
   siap_kirim: "Siap Kirim",
@@ -34,3 +35,14 @@ export const ORDER_TABS = [
   { key: "online", label: "Online" },
   { key: "offline", label: "Offline" },
 ];
+
+export const PAYMENT_STATUS = {
+  BELUM_DIBAYAR: "belum_dibayar",
+  DIBAYAR: "dibayar",
+};
+
+export const NEXT_STATUS = {
+  dibayar: "diproses",
+  diproses: "siap_kirim",
+  siap_kirim: "selesai",
+};

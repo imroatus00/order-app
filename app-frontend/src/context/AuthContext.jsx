@@ -5,16 +5,16 @@ import * as adminApi from "@/services/adminApi";
 const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
-  const [token, setToken] = useState(() => localStorage.getItem(TOKEN_KEY));
+  const [token, setToken] = useState(() => sessionStorage.getItem(TOKEN_KEY));
 
   const login = useCallback(async (credentials) => {
     const data = await adminApi.login(credentials);
-    localStorage.setItem(TOKEN_KEY, data.token);
+    sessionStorage.setItem(TOKEN_KEY, data.token);
     setToken(data.token);
   }, []);
 
   const logout = useCallback(() => {
-    localStorage.removeItem(TOKEN_KEY);
+    sessionStorage.removeItem(TOKEN_KEY);
     setToken(null);
   }, []);
 

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { ArrowLeft, UserRound } from "lucide-react";
-import StatusActions from "@/components/admin-orders/StatusActions.jsx";
+import StatusActions, { StatusUpdateForm } from "@/components/admin-orders/StatusActions.jsx";
 import StatusBadge from "@/components/ui/StatusBadge.jsx";
 import Spinner from "@/components/ui/Spinner.jsx";
 import { getOrderDetail } from "@/services/adminApi";
@@ -9,7 +9,6 @@ import { formatRupiah, formatTanggalJam } from "@/utils/format.js";
 
 const CREAM = "#FFF1E5";
 
-// Desain memakai "Rp23.000"
 const rupiah = (value) => formatRupiah(value).replace(/\s/g, "");
 
 export default function OrderDetailPage() {
@@ -19,6 +18,7 @@ export default function OrderDetailPage() {
   const [order, setOrder] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [view, setView] = useState("detail"); // "detail" | "update"
 
   useEffect(() => {
     let ignore = false;
@@ -26,6 +26,7 @@ export default function OrderDetailPage() {
     async function load() {
       try {
         setLoading(true);
+        setView("detail");
         const data = await getOrderDetail(id);
         if (!ignore) {
           setOrder(data);
@@ -49,6 +50,21 @@ export default function OrderDetailPage() {
     order?.items?.reduce((sum, item) => sum + item.price * item.qty, 0) ??
     0;
 
+  const isUpdateView = view === "update";
+
+  const handleBack = () => {
+    if (isUpdateView) {
+      setView("detail");
+    } else {
+      navigate("/admin/orders");
+    }
+  };
+
+  const handleSaved = (updated) => {
+    setOrder(updated);
+    setView("detail");
+  };
+
   return (
     <div style={{ minHeight: "100%", backgroundColor: CREAM }}>
       {/* Header */}
@@ -56,13 +72,15 @@ export default function OrderDetailPage() {
         <div className="mx-auto flex max-w-3xl items-center gap-3 px-5 py-4">
           <button
             type="button"
-            onClick={() => navigate("/admin/orders")}
-            aria-label="Kembali ke daftar pesanan"
+            onClick={handleBack}
+            aria-label={isUpdateView ? "Kembali ke detail pesanan" : "Kembali ke daftar pesanan"}
             className="rounded p-1 hover:bg-gray-100"
           >
             <ArrowLeft size={28} strokeWidth={1.8} />
           </button>
-          <h1 className="text-lg font-semibold">Daftar Pesanan</h1>
+          <h1 className="text-lg font-semibold">
+            {isUpdateView ? "Update Status Pesanan" : "Daftar Pesanan"}
+          </h1>
         </div>
       </header>
 
@@ -82,6 +100,10 @@ export default function OrderDetailPage() {
             >
               Kembali ke daftar pesanan
             </button>
+          </div>
+        ) : isUpdateView ? (
+          <div className="pt-4">
+            <StatusUpdateForm order={order} onSaved={handleSaved} />
           </div>
         ) : (
           <>
@@ -153,7 +175,11 @@ export default function OrderDetailPage() {
 
             {/* Tombol aksi */}
             <div className="mt-10">
-              <StatusActions order={order} onUpdated={setOrder} />
+              <StatusActions
+                order={order}
+                onUpdated={setOrder}
+                onOpenUpdate={() => setView("update")}
+              />
             </div>
           </>
         )}

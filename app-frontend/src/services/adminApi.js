@@ -1,5 +1,5 @@
 import { api } from "./api";
-import { NEXT_STATUS } from "@/utils/constants.js";
+import { ORDER_STATUS, UPDATE_STEPS } from "@/utils/constants.js";
 
 // true = pakai data contoh (backend belum jadi). Atur lewat file .env
 const USE_MOCK = import.meta.env.VITE_USE_MOCK === "true";
@@ -71,6 +71,18 @@ const MOCK_DETAILS = [
     items: [
       { id: 2, name: "Paket nasi putih Paha", qty: 2, price: 16000 },
       { id: 4, name: "Es jeruk", qty: 1, price: 6000 },
+    ],
+  },
+  {
+    id: 6,
+    code: "OND06030",
+    source: "online",
+    status: "menunggu_pembayaran",
+    paymentStatus: "belum_dibayar",
+    createdAt: "2026-11-09T10:30:00",
+    customer: { name: "Hendra Gunawan", phone: "0813 2200 1144" },
+    items: [
+      { id: 1, name: "Paket nasi kebuli Dada", qty: 2, price: 23000 },
     ],
   },
 ];
@@ -145,9 +157,24 @@ export async function updateOrderStatus(id, status) {
   if (USE_MOCK) {
     await wait(400);
     const order = findMock(id);
-    if (NEXT_STATUS[order.status] !== status) {
-      throw new Error("Urutan status tidak valid.");
+
+    const statusDikenal =
+      status === ORDER_STATUS.DIBATALKAN ||
+      UPDATE_STEPS.some((step) => step.key === status);
+
+    if (!statusDikenal) {
+      throw new Error("Status tidak dikenal.");
     }
+    if (order.status === ORDER_STATUS.DIBATALKAN) {
+      throw new Error("Pesanan yang sudah dibatalkan tidak bisa diubah.");
+    }
+    if (order.status === status) {
+      throw new Error("Status pesanan sudah sama.");
+    }
+    if (status !== ORDER_STATUS.DIBATALKAN && order.paymentStatus !== "dibayar") {
+      throw new Error("Konfirmasi pembayaran dulu sebelum mengubah status.");
+    }
+
     order.status = status;
     return salinDetail(order);
   }

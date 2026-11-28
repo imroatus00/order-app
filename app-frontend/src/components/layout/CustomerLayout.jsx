@@ -1,9 +1,11 @@
+import { useState } from 'react';
 import { Link, NavLink, Outlet } from 'react-router-dom';
-import { Home, ShoppingBasket, ClipboardList, MessageCircle, Menu } from 'lucide-react';
+import { Home, ShoppingBasket, ClipboardList, MessageCircle, Menu, UserRound } from 'lucide-react';
 import { useCart } from '../../context/CartContext';
 
 const CustomerLayout = () => {
     const { totalQty } = useCart();
+    const [menuOpen, setMenuOpen] = useState(false);
 
     const navClass = ({ isActive }) =>
         `relative p-2 ${isActive ? 'text-[#F36F21]' : 'text-[#3D251C]/60'}`;
@@ -27,6 +29,10 @@ const CustomerLayout = () => {
                 <Link
                     to="/admin/login"
                     aria-label="Login admin"
+                    onClick={(e) => { 
+                        e.preventDefault();
+                        setMenuOpen(true);
+                    }}
                     className="p-2 text-[#3D251C]"
                 >
                     <Menu size={26} />
@@ -36,6 +42,40 @@ const CustomerLayout = () => {
             {/* ISI HALAMAN */}
             <div className="pb-20">
                 <Outlet />
+            </div>
+
+            {/* OVERLAY GELAP (ketuk untuk menutup panel menu) */}
+            <div
+                aria-hidden="true"
+                onClick={() => setMenuOpen(false)}
+                className={`fixed inset-0 z-30 bg-black/50 transition-opacity duration-300 ${
+                    menuOpen ? 'opacity-100' : 'pointer-events-none opacity-0'
+                }`}
+            />
+
+            {/* PANEL MENU */}
+            <div
+                role="dialog"
+                aria-modal="true"
+                aria-label="Menu"
+                aria-hidden={!menuOpen}
+                className={`fixed right-0 top-0 z-40 h-full w-[57%] max-w-xs bg-[#FFF0DF] shadow-xl transition-transform duration-300 ${
+                    menuOpen ? 'translate-x-0' : 'translate-x-full'
+                }`}
+            >
+                <Link
+                    to="/admin/login"
+                    tabIndex={menuOpen ? 0 : -1}
+                    onClick={() => setMenuOpen(false)}
+                    className="flex items-center gap-3 bg-[#FFF0DF] px-5 py-4 shadow-sm"
+                >
+                    <span className="flex h-9 w-9 items-center justify-center rounded-full bg-[#7A3B1D] text-white">
+                        <UserRound size={20} />
+                    </span>
+                    <span className="text-base font-medium text-[#111111]">
+                        Login admin
+                    </span>
+                </Link>
             </div>
 
             {/* BOTTOM NAV */}
